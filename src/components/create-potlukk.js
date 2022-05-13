@@ -7,6 +7,9 @@ export default function CreatePotlukk(){
     const [username, setUsername] = useState("");
 
     useEffect(()=>{
+        //Commented code to take user's username from session storage
+        //Breaks if there's nothing in sessions storage
+
         //const user = JSON.parse(sessionStorage.getItem("user"));
         //setUsername(user.username);
         setUsername("jlangston");
@@ -31,7 +34,7 @@ export default function CreatePotlukk(){
     async function createPotluck(){
         const potluck = {description:description,dateTime:Date.parse(date),creator:username,private:isPrivate,url:""};
         
-        
+        //Update link to proper host website
         const response = await fetch("http://localhost:8080/potlucks",{
             body:JSON.stringify(potluck),
             method:"POST",
@@ -51,6 +54,8 @@ export default function CreatePotlukk(){
         
     }
 
+    //Add a link to the Submit button that goes to the add items page
+    //After creating the new potluck
     return(<>
     
     <h1>Create a potluck for {username}</h1>
