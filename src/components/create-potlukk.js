@@ -1,31 +1,79 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
 
 export default function CreatePotlukk(){
 
+    const navigate = useNavigate();
+    const [username, setUsername] = useState("");
+
+    useEffect(()=>{
+        //const user = JSON.parse(sessionStorage.getItem("user"));
+        //setUsername(user.username);
+        setUsername("Username");
+    }, []);
+
+    const [description, setDescription] = useState("");
+    const [date, setDate] = useState("2022-06-12T19:30");
+    const [isPrivate, setIsPrivate] = useState(false);
+
+    function updateDescription(event){
+        setDescription(event.target.value);
+    }
+
+    function updateDate(event){
+        setDate(event.target.value);
+    }
+
+    function updateIsPrivate(event){
+        setIsPrivate(event.target.checked);
+    }
+
+    async function createPotluck(){
+        const potluck = {id:0,description:description,datetime:Date.parse(date),creator:username,is_private:isPrivate,url:""};
+        console.log(potluck);
+        /*
+        const response = await fetch("",{
+            body:JSON.stringify(potluck),
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status === 200){
+            const body = await response.json();
+            alert(`${body.description} has been created!`);
+        }
+        else{
+            alert("Failed to create potluck.");
+        }
+        */
+    }
+
     return(<>
     
-    <h1>Create/Edit A Potlukk</h1>
+    <h1>Create a potluck for {username}</h1>
     
         <table>
             <tbody>
                 <tr><td><label htmlFor="potluckname">Name/Description</label></td>
-                <td><input name ="potluckkname"/><br/></td></tr>
+                <td><input onChange={updateDescription} name ="potluckkname"/><br/></td></tr>
             
                 <tr><td><label htmlFor="date">Date/Time</label></td>
-                <td><input name ="date"/></td></tr>
+                <td><input type="datetime-local" onChange={updateDate} value={date}/></td></tr>
+
+                <tr><td><label htmlFor="isprivate">Private:</label></td>
+                <td><input type="checkbox" onChange={updateIsPrivate} value={isPrivate}/></td></tr>
             </tbody>
         </table>
         
-        {/* Center this Checkbox */}
         <br/>
-        <label htmlFor="isprivate">Private:</label>
-        <input type="checkbox" id="isprivate" name="isprivate" value="private"></input>
-        <br/>       
         <br/>
 
-        <button>Submit</button>
+        <button onClick={createPotluck}>Submit</button>
         
         <br/>
-        <button>Return to Home</button>
+        <button onClick={()=>navigate("/")}> Return to Home </button>
     </>)
 
 }
