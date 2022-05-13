@@ -16,6 +16,7 @@ root.render(
       <Routes>
         <Route path='/' element={<SplashPage/>}/>
         <Route path='/potlukkviewer' element={<PotlukkViewer/>}/>
+        <Route path='/potlukkviewer/:id' element={<PotlukkViewer/>}/>
         <Route path='/createpotlukk' element={<CreatePotlukk/>}/>
         <Route path='/additems' element={<AddItems/>}/>
         <Route path='/register' element={<RegisterUser/>}/>
