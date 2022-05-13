@@ -9,7 +9,7 @@ export default function CreatePotlukk(){
     useEffect(()=>{
         //const user = JSON.parse(sessionStorage.getItem("user"));
         //setUsername(user.username);
-        setUsername("Username");
+        setUsername("jlangston");
     }, []);
 
     const [description, setDescription] = useState("");
@@ -29,10 +29,10 @@ export default function CreatePotlukk(){
     }
 
     async function createPotluck(){
-        const potluck = {id:0,description:description,datetime:Date.parse(date),creator:username,is_private:isPrivate,url:""};
-        console.log(potluck);
-        /*
-        const response = await fetch("",{
+        const potluck = {description:description,dateTime:Date.parse(date),creator:username,private:isPrivate,url:""};
+        
+        
+        const response = await fetch("http://localhost:8080/potlucks",{
             body:JSON.stringify(potluck),
             method:"POST",
             headers:{
@@ -47,7 +47,8 @@ export default function CreatePotlukk(){
         else{
             alert("Failed to create potluck.");
         }
-        */
+        
+        
     }
 
     return(<>
