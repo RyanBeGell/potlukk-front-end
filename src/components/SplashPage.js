@@ -1,26 +1,53 @@
+import { useState, useEffect } from "react";
 
 
 export default function SplashPage(){
 
-    return(<>
-    <h1>Welcome to Potlukk!</h1>
-    <h3>Choose an Potlukk:</h3>
-    <table>
-        <thead>
-            <tr><td></td><th>Potlukk</th><th>Date/Time</th><th>Host</th></tr>
-        </thead>
-        <tbody>
-            <tr><td><button>Select</button></td><td>Justin's Christmas Potlukk</td><td>5/21/2022</td><td>John</td></tr>
-            <tr><td><button>Select</button></td><td>Ryan's Festivus Potlukk</td><td>5/28/2022</td><td>Bill</td></tr>
-            <tr><td><button>Select</button></td><td>A different one</td><td>6/21/2022</td><td>John</td></tr>
-        </tbody>
-    </table>
+    const [potlukks,setPotlukks] = useState([]);
+    const [potlukk,setPotlukk] = useState("");
 
-    <br/>
-    <br/>
-    
-    <button>Register a New User</button>
-    <button>Create a New Potlukk</button>
-    <button>Sign In</button>
+    async function getAllPotlukks(){
+        const response = await fetch(".../potlukks");
+        const body = await response.json();
+        setPotlukks(body);
+    }
+
+    useEffect(()=>{
+        getAllPotlukks()
+    },[]);
+
+    const listItems = potlukks.filter(p => !p.isPrivate).map(p => 
+        <tr>
+            <td><a href="/potlukkviewer"><button onClick={setPotlukk(p)}>Select</button></a></td> 
+            <td>p.description</td>
+            <td>p.datetime</td>
+            <td>p.creator</td>
+        </tr>);
+
+    return(<>
+        <h1>Welcome to Potlukk!</h1>
+        <h3>Choose a Potlukk:</h3>
+        <table>
+            <thead>
+                <tr><td></td><th>Potlukk</th><th>Date/Time</th><th>Host</th></tr>
+            </thead>
+            <tbody>
+                {listItems}
+            </tbody>
+        </table>
+
+        <br/>
+        <br/>
+        <a href="/register">
+            <button>Register a New User</button>
+        </a>
+        
+        <a href="/createpotlukk">
+            <button>Create a New Potlukk</button>
+        </a>    
+
+        <a href="/signin">
+            <button>Sign In</button>
+        </a>
     </>)
 }
