@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function SplashPage(){
@@ -7,9 +8,10 @@ export default function SplashPage(){
     const [potlukk,setPotlukk] = useState("");
 
     async function getAllPotlukks(){
-        const response = await fetch(".../potlukks");
+        const response = await fetch("http://localhost:8080/potlucks");
         const body = await response.json();
         setPotlukks(body);
+        console.log(body);
     }
 
     useEffect(()=>{
@@ -18,10 +20,10 @@ export default function SplashPage(){
 
     const listItems = potlukks.filter(p => !p.isPrivate).map(p => 
         <tr>
-            <td><a href="/potlukkviewer"><button onClick={setPotlukk(p)}>Select</button></a></td> 
-            <td>p.description</td>
-            <td>p.datetime</td>
-            <td>p.creator</td>
+            <td><Link to={"potlukkviewer/"+p.potluckID}><button>Select</button></Link></td>
+            <td>{p.description}</td>
+            <td>{Date(p.datetime)}</td>
+            <td>{p.creator}</td>
         </tr>);
 
     return(<>
