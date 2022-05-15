@@ -30,11 +30,11 @@ export default function SignIn(){
     }
 
     return(<>
-    <button>Home</button>
+        <button>Home</button>
     
         <h2>Sign In</h2>
 
-    <table>
+        <table>
             <tbody>
 
                 <tr><td><label htmlFor="username">Username</label></td>
