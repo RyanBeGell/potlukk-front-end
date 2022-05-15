@@ -23,6 +23,7 @@ export default function AddItems(){
     .map(i => <tr key ={i.itemId}>
         <td>{i.description}</td>
         <td>{i.status}</td>
+        <td><button onClick={() => fulfillItem(i.itemId)}>Fulfill</button></td>
         <td><button  onClick={() => deleteItem(i.itemId)}>Delete</button></td>
     </tr>);
 
@@ -62,6 +63,22 @@ export default function AddItems(){
         else{
             alert("Failed to add item.");
         }
+    }
+
+    async function fulfillItem(itemId){
+
+        const response = await fetch(`http://localhost:8080/items/${itemId}/fulfilled`, {
+            method:"PATCH",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status !== 200){
+            alert("Failed to update item.")
+        }
+
+        getItemsByPotluck();
     }
 
     async function deleteItem(itemId){
