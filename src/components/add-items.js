@@ -20,18 +20,18 @@ export default function AddItems(){
     },[]);
 
     const itemsMissingRows = items.filter(i => i.status !== "Fulfilled")
-    .map(i => <tr key ={i.item_id}>
+    .map(i => <tr key ={i.itemId}>
         <td>{i.description}</td>
         <td>{i.status}</td>
-        <td><button>Delete</button></td>
+        <td><button  onClick={() => deleteItem(i.itemId)}>Delete</button></td>
     </tr>);
 
     const itemsFulfilledRows = items.filter(i => i.status === "Fulfilled")
-    .map(i => <tr key ={i.item_id}>
+    .map(i => <tr key ={i.itemId}>
         <td>{i.description}</td>
         <td>{i.status}</td>
         <td>{i.supplier}</td>
-        <td><button>Delete</button></td>
+        <td><button onClick={() => deleteItem(i.itemId)}>Delete</button></td>
     </tr>);
 
     const [description, setDescription] = useState("");
@@ -48,7 +48,7 @@ export default function AddItems(){
     async function createItem(){
         const item = {description:description, status:status, supplier:"", potluckId:7};
 
-        const response = await fetch("http://localhost:8080/items",{
+        const response = await fetch('http://localhost:8080/items',{
             body:JSON.stringify(item),
             method:"POST",
             headers:{
@@ -62,6 +62,22 @@ export default function AddItems(){
         else{
             alert("Failed to add item.");
         }
+    }
+
+    async function deleteItem(itemId){
+
+        const response = await fetch(`http://localhost:8080/items/${itemId}`, {
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status !== 200){
+            alert("Failed to delete item.")
+        }
+
+        getItemsByPotluck();
     }
 
     return(<>
