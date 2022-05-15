@@ -8,7 +8,7 @@ export default function SplashPage(){
     const [potlukk,setPotlukk] = useState("");
 
     async function getAllPotlukks(){
-        const response = await fetch("http://localhost:8080/potlucks");
+        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
         const body = await response.json();
         setPotlukks(body);
         console.log(body);
