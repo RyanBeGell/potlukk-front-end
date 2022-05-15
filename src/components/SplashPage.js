@@ -20,7 +20,7 @@ export default function SplashPage(){
 
     const listItems = potlukks.filter(p => !p.isPrivate).map(p => 
         <tr>
-            <td><Link to={"http://localhost:3000/potlukkviewer/"+p.potlukkId}></Link><button>Select</button></td> 
+            <td><Link to={"potlukkviewer/"+p.potluckID}><button>Select</button></Link></td>
             <td>{p.description}</td>
             <td>{Date(p.datetime)}</td>
             <td>{p.creator}</td>
@@ -28,8 +28,6 @@ export default function SplashPage(){
 
     return(<>
         <h1>Welcome to Potlukk!</h1>
-        <Link to={"/potlukkviewer/"+15}>go to potluck 15</Link>
-        <Link to={"/potlukkviewer/"+25}>go to potluck 25</Link>
         <h3>Choose a Potlukk:</h3>
         <table>
             <thead>

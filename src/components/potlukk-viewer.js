@@ -3,42 +3,79 @@ import { useParams } from "react-router-dom";
 
 export default function PotlukkViewer(){
     const {id} = useParams()
-    console.log(id)
 
-    const [items,setItems] = useState([])
+    const [items,setItems] = useState([]);
 
-    // async function getAllItems(){
-    //     const response = await fetch(".../items");
-    //     const body = await response.json();
-    //     setItems(body)
-    // }
+    async function getAllItems(){
+        const response = await fetch("http://localhost:8080/potlucks/"+id+"/items/");
+        const body = await response.json();
+        console.log(body);
+        setItems(body)
+    }
 
-    // useEffect(()=>{
-    //     getAllItems();
-    // })
+    function updateItems(item){
+        const clonedArray = [...items];
+        clonedArray.push(item);
+        setItems(clonedArray)
+    }
 
-    const fulfilled = items.filter(i => i.status==="Fulfilled").map(i =>
-        <tr><td>i.description</td><td>i.supplier</td></tr>);
+    useEffect(()=>{getAllItems()}, [])
 
-    const missing = items.filter(i => !i.status==="Fulfilled").map(i =>
-        <tr><td>i.description</td><td>i.supplier</td><td><button>Sign me Up!</button></td></tr>);
-  
+    const missing = items.filter(i => i.status!="Fulfilled").map(i =>
+        <tr><td>{i.description}</td><td><input onChange={updateSupplier} placeholder="Your Name"/></td><td><button onClick={() => { bringItem(i); getAllItems();}}>Sign me Up!</button></td></tr>);
 
-    const [description, setDescription] = useState("");
-    const [supplier,setSupplier] = useState("");
+    const fulfilled = items.filter(i => i.status=="Fulfilled").map(i =>
+        <tr><td>{i.description}</td><td>{i.supplier}</td></tr>);    
 
-    function updateDescription(event){
+     const [description, setDescription] = useState("");
+     const [supplier,setSupplier] = useState("");
+
+     function updateDescription(event){
         setDescription(event.target.value)
-    }
+     }
 
-    function updateSupplier(event){
+     function updateSupplier(event){
         setSupplier(event.target.value)
-    }
+     }
 
-    async function createItem(){
-        const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:0}
 
-    // }
+
+//Create and sign up to bring a new item
+     async function createItem(){
+        const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
+        const response = await fetch("http://localhost:8080/items",{
+            body:JSON.stringify(item),
+            method:"Post",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status != 201){
+            alert("Failed to Create New Item");
+        } else {
+            updateItems(item);
+        }
+     }
+
+
+//Update item to Fulfilled
+     async function bringItem(item){
+        item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
+        const response = await fetch("http://localhost:8080/items/"+item.itemId+"/fulfilled",{
+            body:JSON.stringify(item),
+            method:"PATCH", //patch has to be in caps for some reason...but not Post...
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status != 200){
+            alert("Failed to Create New Item");
+        } else {
+            updateItems(item);
+        }
+     }
 
     return(<>
     <h1>Potluck Name : Potlukk Date</h1>
@@ -50,9 +87,9 @@ export default function PotlukkViewer(){
         <tbody>
             {missing}
             <tr>
-                <td><input name="otherItem" placeholder="Other Item"/></td>
-                <td><input name="supplier" placeholder="Your Name"/></td>
-                <td><button>Sign me Up!</button></td>
+                <td><input onChange={updateDescription} name="otherItem" placeholder="Other Item"/></td>
+                <td><input onChange={updateSupplier} name="supplier" placeholder="Your Name"/></td>
+                <td><button onClick={() => { createItem(); getAllItems();}}>Sign me Up!</button></td>
             </tr>
         </tbody>
     </table>
@@ -75,5 +112,4 @@ export default function PotlukkViewer(){
         <button>Return to Home</button>
     </a>
     </>)
-}
 }
