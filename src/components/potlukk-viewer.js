@@ -2,7 +2,21 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom";
 
 export default function PotlukkViewer(){
-    const {id} = useParams()
+    const {id} = useParams();
+
+    const [potluck, setPotluck] = useState([]);
+
+    async function getPotluckbyId(id){
+        const response = await fetch("http://localhost:8080/potlucks/"+id);
+        const body = await response.json();
+        setPotluck(body)
+    }
+
+    useEffect(()=>{getPotluckbyId(id)}, [])
+
+    const date = new Intl.DateTimeFormat('en-US', 
+        { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', 
+        minute: '2-digit'}).format(potluck.dateTime);
 
     const [items,setItems] = useState([]);
 
@@ -78,7 +92,7 @@ export default function PotlukkViewer(){
      }
 
     return(<>
-    <h1>Potluck Name : Potlukk Date</h1>
+    <h1>{potluck.description} : {date}</h1>
     <h3>Sign Up To Contribute!</h3>
     <table>
         <thead>
