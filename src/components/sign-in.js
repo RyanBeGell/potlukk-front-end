@@ -25,8 +25,8 @@ export default function SignIn(){
             }
         });
         const userInfo = await response.json()
-        sessionStorage.setItem("user", JSON.stringify(userInfo));// store our employee in session storage
-        navigate("/")
+        sessionStorage.setItem("user", JSON.stringify(userInfo));// store user in session storage
+        navigate("/")   //navigate to home page 
     }
 
     return(<>
