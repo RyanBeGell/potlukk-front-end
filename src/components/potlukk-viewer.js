@@ -7,7 +7,7 @@ export default function PotlukkViewer(){
     const [potluck, setPotluck] = useState([]);
 
     async function getPotluckbyId(id){
-        const response = await fetch("http://localhost:8080/potlucks/"+id);
+        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/"+id);
         const body = await response.json();
         setPotluck(body)
     }
@@ -21,7 +21,7 @@ export default function PotlukkViewer(){
     const [items,setItems] = useState([]);
 
     async function getAllItems(){
-        const response = await fetch("http://localhost:8080/potlucks/"+id+"/items/");
+        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/"+id+"/items/");
         const body = await response.json();
         console.log(body);
         setItems(body)
@@ -57,7 +57,7 @@ export default function PotlukkViewer(){
 //Create and sign up to bring a new item
      async function createItem(){
         const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
-        const response = await fetch("http://localhost:8080/items",{
+        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
             body:JSON.stringify(item),
             method:"Post",
             headers:{
@@ -76,7 +76,7 @@ export default function PotlukkViewer(){
 //Update item to Fulfilled
      async function bringItem(item){
         item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
-        const response = await fetch("http://localhost:8080/items/"+item.itemId+"/fulfilled",{
+        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
             body:JSON.stringify(item),
             method:"PATCH", //patch has to be in caps for some reason...but not Post...
             headers:{
