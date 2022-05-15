@@ -46,6 +46,7 @@ export default function CreatePotlukk(){
         if(response.status === 200){
             const body = await response.json();
             alert(`${body.description} has been created!`);
+            navigate("/additems")
         }
         else{
             alert("Failed to create potluck.");
