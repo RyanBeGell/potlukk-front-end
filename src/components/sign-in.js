@@ -17,7 +17,7 @@ export default function SignIn(){
 
     async function sendLoginInfo(){
         const loginInfo = {username,password}
-        const response = await fetch("http://localhost:8080/login", {
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/login", {
             method:"POST", 
             body:JSON.stringify(loginInfo),
             headers:{
