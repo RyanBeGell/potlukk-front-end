@@ -7,6 +7,8 @@ import CreatePotlukk from './components/create-potlukk';
 import AddItems from './components/add-items';
 import RegisterUser from './components/registration';
 import SignIn from './components/sign-in';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './index.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

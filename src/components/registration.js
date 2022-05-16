@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom"
+import { Form, Button, FloatingLabel } from "react-bootstrap"
 
 export default function RegisterUser(){
 
@@ -47,28 +48,69 @@ export default function RegisterUser(){
 
     return(<>
 
-        <button>Home</button>
+        <Button href="/" id = "home" variant="primary" size = "lg">Home</Button>
+        <img id ="logo" src="../../images/PotlukkNameLogo.png" alt="Potlukk logo"></img>
+        <div id ="centerWithBox" align ="center">
         <h2>Create a Potlukk Account</h2>
-
+        <br />
         <table>
             <tbody>
+                <tr>
+                    <td>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="First name"
+                            className="mb-3"
+                            >
 
-                <tr><td><label htmlFor="username">Username</label></td>
-                <td><input onChange={updateUsername}name ="username" type="text"/><br/></td></tr>
-                
-                <tr><td><label htmlFor="password">Password</label></td>
-                <td><input onChange={updatePassword} name ="password" type="password"/></td></tr>
-                    
-                <tr><td><label htmlFor="first">First Name</label></td>
-                <td><input onChange={updateFirstName}name ="first" type="text"/><br/></td></tr>
-                
-                <tr><td><label htmlFor="last">Last Name</label></td>
-                <td><input onChange={updateLastName} name ="last" type="text"/></td></tr>
+                            <Form.Control htmlFor="firstName" onChange={updateFirstName} name = "firstName" type="text" placeholder="First name" />
+                        </FloatingLabel>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Last name"
+                            className="mb-3"
+                            >
+
+                            <Form.Control htmlFor="lastName" onChange={updateLastName} name = "LastName" type="text" placeholder="Last name" />
+                        </FloatingLabel>
+                    </td>
+                </tr>
+                    <tr>
+                        <td>
+                            <FloatingLabel
+                                 controlId="floatingInput"
+                                label="Username"
+                                className="mb-3"
+                                >
+
+                                <Form.Control htmlFor="username" onChange={updateUsername} name = "username" type="text" placeholder="Username" />
+                            </FloatingLabel>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                        <FloatingLabel
+                            controlId="floatingInput"
+                            label="Password"
+                            className="mb-3"
+                        >
+
+                            <Form.Control onChange={updatePassword} name = "password" htmlFor="password" type="password" placeholder="Password" />
+                            </FloatingLabel>
+                        </td>
+                    </tr>
             </tbody>
+            </table>
             <br/>
-            <button onClick={createUser}>Submit</button>
-        </table> 
-
+            <Button variant = "primary" size = "lg" onClick={createUser}>Submit</Button>
+            <br/>
+            <Button href="/signin" id= "linkButton" variant="link">Sign in instead</Button>
+        </div> 
         <br/>
     </>)
 }
