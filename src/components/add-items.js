@@ -1,21 +1,23 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export default function AddItems(){
 
     const navigate = useNavigate();
+    const {potluckId} = useParams();
 
     const [items, setItems] = useState([]);
 
     async function getItemsByPotluck(){
 
-        const response = await fetch("http://localhost:8080/potlucks/7/items");
+        const response = await fetch(`http://localhost:8080/potlucks/${potluckId}/items`);
         const body = await response.json();
         setItems(body);
 
     }
 
     useEffect(()=>{
+        console.log(potluckId);
         getItemsByPotluck();
     },[]);
 
@@ -47,7 +49,7 @@ export default function AddItems(){
     }
 
     async function createItem(){
-        const item = {description:description, status:status, supplier:"", potluckId:7};
+        const item = {description:description, status:status, supplier:"", potluckId:potluckId};
 
         const response = await fetch('http://localhost:8080/items',{
             body:JSON.stringify(item),
