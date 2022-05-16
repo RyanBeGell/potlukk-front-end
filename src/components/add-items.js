@@ -4,20 +4,51 @@ import { useNavigate, useParams } from "react-router-dom"
 export default function AddItems(){
 
     const navigate = useNavigate();
+    const [username, setUsername] = useState("");
+    const [creator, setCreator] = useState("");
     const {potluckId} = useParams();
 
     const [items, setItems] = useState([]);
 
     async function getItemsByPotluck(){
 
-        const response = await fetch(`http://localhost:8080/potlucks/${potluckId}/items`);
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}/items`);
         const body = await response.json();
         setItems(body);
 
     }
 
+    async function getCreator(){
+
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`);
+        const body = await response.json();
+        setCreator(body.creator);
+    }
+
     useEffect(()=>{
-        console.log(potluckId);
+        getCreator();
+
+        //Check if user is signed in
+        //Then check to see if their username matches the potluck creator
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        if(user === null){
+            
+            alert("Please sign in first to edit your potluck.");
+            navigate("/");
+            
+
+            //Commented default username for debugging
+            //setUsername("jlanfgston");
+        }
+        else{
+            setUsername(user.username);
+            
+            if(username !== creator){
+                alert("You are not the owner of this potluck");
+                navigate("/");
+            }
+        }
+
         getItemsByPotluck();
     },[]);
 
@@ -25,7 +56,6 @@ export default function AddItems(){
     .map(i => <tr key ={i.itemId}>
         <td>{i.description}</td>
         <td>{i.status}</td>
-        <td><button onClick={() => fulfillItem(i.itemId)}>Fulfill</button></td>
         <td><button  onClick={() => deleteItem(i.itemId)}>Delete</button></td>
     </tr>);
 
@@ -51,7 +81,7 @@ export default function AddItems(){
     async function createItem(){
         const item = {description:description, status:status, supplier:"", potluckId:potluckId};
 
-        const response = await fetch('http://localhost:8080/items',{
+        const response = await fetch('http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items',{
             body:JSON.stringify(item),
             method:"POST",
             headers:{
@@ -67,25 +97,9 @@ export default function AddItems(){
         }
     }
 
-    async function fulfillItem(itemId){
-
-        const response = await fetch(`http://localhost:8080/items/${itemId}/fulfilled`, {
-            method:"PATCH",
-            headers:{
-                "Content-Type":"application/json"
-            }
-        });
-
-        if(response.status !== 200){
-            alert("Failed to update item.")
-        }
-
-        getItemsByPotluck();
-    }
-
     async function deleteItem(itemId){
 
-        const response = await fetch(`http://localhost:8080/items/${itemId}`, {
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/${itemId}`, {
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -97,6 +111,24 @@ export default function AddItems(){
         }
 
         getItemsByPotluck();
+    }
+
+    async function deletePotluck(){
+        
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`, {
+            method:"DELETE",
+            headers:{
+                "Content-Type":"application/json"
+            }
+        });
+
+        if(response.status !== 200){
+            alert("Failed to delete potluck.")
+        }
+        else{
+            alert("Potluck has been deleted")
+            navigate("/");
+        }
     }
 
     return(<>
@@ -148,6 +180,7 @@ export default function AddItems(){
     
     <br/>
     <button onClick={()=>navigate("/")}>Return to Home</button>
+    <button onClick={deletePotluck}>Delete Potluck</button>
     
     </>)
 
