@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button'
 
 export default function PotlukkViewer(){
     const {id} = useParams();
@@ -46,13 +47,13 @@ export default function PotlukkViewer(){
 //Map Wanted/Needed for display on first list and add button to sign up
 //Why doesn't the item disappear when you click the button and change the status???
     const missing = items.filter(i => i.status!=="Fulfilled").map(i =>
-        <tr><td>{i.description}</td><td>{i.status}</td><td><input onChange={updateSupplier} 
-            placeholder="Your Name"/></td><td><button 
-            onClick={() => { bringItem(i);}}>Sign me Up!</button></td></tr>);
+        <tr><td class = "potluckItemInput">{i.description}</td><td class = "potluckItemInput"><input onChange={updateSupplier} 
+            placeholder="Your Name"/></td><td class = "potluckItemInput"><Button variant = "primary" size = "sm"
+            onClick={() => { bringItem(i);}}>Sign me up!</Button></td></tr>);
 
 
     const fulfilled = items.filter(i => i.status==="Fulfilled").map(i =>
-        <tr><td>{i.description}</td><td>{i.supplier}</td></tr>);    
+        <tr><td class = "potluckItemInput">{i.description}</td><td>{i.supplier}</td></tr>);    
 
 
 // Description and Supplier Input Boxes and associated states to track entered values    
@@ -71,53 +72,62 @@ export default function PotlukkViewer(){
 
 //Create and sign up to bring a new item
      async function createItem(){
-        const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
-        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
-            body:JSON.stringify(item),
-            method:"Post",
-            headers:{
-                "Content-Type":"application/json"
-            }
-        });
+        if(description==""){
+            alert('Please input an item description');
+        }else if(supplier == ""){
+            alert('Please input your name as the supplier.');
+        }else{
+            const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
+            const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
+                body:JSON.stringify(item),
+                method:"Post",
+                headers:{
+                    "Content-Type":"application/json"
+                }
+            });
 
-        if(response.status != 201){
-            alert("Failed to Create New Item");
-        } else {
-            //Update the "stateful" items variable with the new item that was just added to the db
-            updateItems(item);
+            if(response.status != 201){
+                alert("Failed to Create New Item");
+            } else {
+                //Update the "stateful" items variable with the new item that was just added to the db
+                updateItems(item);
+            }
         }
      }
 
 
 //Update item to Fulfilled and add volunteer's (supplier's) name; PATCH to DB
      async function bringItem(item){
-        item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
-        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
-            body:JSON.stringify(item),
-            method:"PATCH", //patch has to be in caps for some reason...but not Post...
-            headers:{
-                "Content-Type":"application/json"
-            }
-        });
-
-        if(response.status != 200){
-            alert("Failed to Create New Item");
-        } else {
-            // console.log(item);
-            // updateItems(item);
-            items.forEach(i => {
-                if(item.itemId === i.itemId){
-                    i.status = "Fulfilled"
-                    i.supplier = supplier
+         if(supplier ==""){
+            alert('Please input your name as the supplier.');
+         }else{
+            item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
+            const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
+                body:JSON.stringify(item),
+                method:"PATCH", //patch has to be in caps for some reason...but not Post...
+                headers:{
+                    "Content-Type":"application/json"
                 }
-            })
-            setItems([...items]);
-            setSupplier("");
+            });
+
+            if(response.status != 200){
+                alert("Failed to Create New Item");
+            } else {
+                // console.log(item);
+                // updateItems(item);
+                items.forEach(i => {
+                    if(item.itemId === i.itemId){
+                        i.status = "Fulfilled"
+                        i.supplier = supplier
+                    }
+                })
+                setItems([...items]);
+                setSupplier("");
+            }
         }
      }
 
-
-     //Validate user is the owner when "Edit Potlukk" button is clicked
+    //Validate user is the owner when "Edit Potlukk" button is clicked
     async function validateUser(){
 
         const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${id}`);
@@ -128,7 +138,7 @@ export default function PotlukkViewer(){
         //Then check to see if their username matches the potluck creator
         const user = JSON.parse(sessionStorage.getItem("user"));
         if(user === null){
-            
+
             alert("Please sign in first to edit your potluck.");          
 
             //Commented default username for debugging
@@ -145,38 +155,60 @@ export default function PotlukkViewer(){
         }
     }
 
-//Display View
     return(<>
-    <h1>{potluck.description} : {date}</h1>
-    <h3>Sign Up To Contribute!</h3>
-    <table>
-        <thead>
-            <tr><th>Item</th><th>Status</th><th>Volunteer</th></tr>
-        </thead>
-        <tbody>
-            {missing}
-            <tr>
-                <td colSpan="2"><input onChange={updateDescription} name="otherItem" placeholder="Other Item"/></td>
-                <td><input onChange={updateSupplier} name="supplier" placeholder="Your Name"/></td>
-                <td><button onClick={() => { createItem();}}>Sign me Up!</button></td>
-            </tr>
-        </tbody>
-    </table>
-<br/><h3>Current Menu</h3>
-<table>
-        <thead>
-            <tr><th>Item</th><th>Volunteer</th></tr>
-        </thead>
-        <tbody>
-            {fulfilled}
-        </tbody>
-    </table>
-<br/>
 
-    <button onClick={() => { validateUser();}}>Edit Potluck</button>
+    <Button href="/" id = "home" variant="primary" size = "lg">Home</Button>
+    <img id ="logo" src="../../images/PotlukkNameLogo.png" alt="Potlukk logo"></img>
+
+    <div id="potluckViewer" align = "center">
+        <h1>{potluck.description}</h1>
+        <h4>{date}</h4>
+        <h3>Sign Up To Contribute! </h3> <br />
     
-    <a href="/">
-        <button>Return to Home</button>
-    </a>
+    
+        <table id = "itemTable">
+
+            <thead>
+                <th>
+                    <h3>Wanted items</h3> 
+                    <hr />
+                </th>
+                <tr>
+                    <th>Item</th>
+                    <th>Volunteer</th>
+                    <th><Button  onClick={() => { validateUser();}} id = "editPotluckButton" variant="warning" size = "sm">Edit Potluck</Button></th>
+                    </tr>
+            </thead>
+            <tbody>
+                {missing}
+                <tr>
+                    <td class = "potluckItemInput">
+                        <input onChange={updateDescription} name="otherItem" placeholder="Other Item"/>
+                    </td>
+                    <td class = "potluckItemInput">
+                        <input onChange={updateSupplier} name="supplier" placeholder="Your Name"/>
+                    </td>
+                    <td class = "potluckItemInput">
+                        <Button variant = "primary" size = "sm" onClick={() => { createItem();}}>Sign me Up!</Button>
+                    </td>
+                </tr>
+            </tbody> <br />
+
+            <h3 id = "potluckItemInput">Current Menu</h3>
+            <hr />
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Volunteer</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {fulfilled}
+            </tbody>
+
+        </table>
+    </div>
+    
     </>)
 }
