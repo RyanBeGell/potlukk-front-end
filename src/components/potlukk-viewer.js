@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function PotlukkViewer(){
     const {id} = useParams();
+    const navigate = useNavigate();
 
     const [potluck, setPotluck] = useState([]);
 
@@ -143,9 +144,7 @@ export default function PotlukkViewer(){
     </table>
 <br/>
 
-    <a href="/additems">
-        <button>Edit Potluck</button>
-    </a>
+    <button onClick={()=>navigate(`/additems/${id}`)}>Edit Potluck</button>
     
     <a href="/">
         <button>Return to Home</button>
