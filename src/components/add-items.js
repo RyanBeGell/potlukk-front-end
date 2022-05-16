@@ -8,6 +8,7 @@ export default function AddItems(){
     const {potluckId} = useParams();
 
     const [items, setItems] = useState([]);
+    const [potluckName, setPotluckname] = useState("");
 
     async function getItemsByPotluck(){
 
@@ -22,6 +23,7 @@ export default function AddItems(){
         const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`);
         const body = await response.json();
         const creator = body.creator;
+        setPotluckname(body.description);
 
         //Check if user is signed in
         //Then check to see if their username matches the potluck creator
@@ -137,7 +139,7 @@ export default function AddItems(){
     <Button href="/" id = "home" variant="primary" size = "lg">Home</Button>
     <img id ="logo" src="../../images/PotlukkNameLogo.png" alt="Potlukk logo"></img>
     <div id = "splashPageContent" align ="center">
-        <h2>Potlukk Name</h2>
+        <h2>{potluckName}</h2>
             <table width="500px">
                 <thead>
                     <tr><th>Item</th><th>Level of Desire</th></tr>
