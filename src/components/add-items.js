@@ -183,8 +183,9 @@ export default function AddItems(){
                 </tbody>
             </table>
         <br/>
-        <p>Direct link to this Potluck: <a href={URL}>{URL}</a></p>
-        
+        <p>Direct link to this Potluck---
+        <Button variant="primary" size="md" onClick={() => {navigator.clipboard.writeText(`${URL}`)}}>Click to copy link</Button>
+        </p>
         <br/>
         <Button variant="danger" size = "md" onClick={deletePotluck}>Delete Potluck</Button>
     </div>
