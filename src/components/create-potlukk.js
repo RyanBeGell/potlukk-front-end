@@ -7,12 +7,18 @@ export default function CreatePotlukk(){
     const [username, setUsername] = useState("");
 
     useEffect(()=>{
-        //Commented code to take user's username from session storage
-        //Breaks if there's nothing in sessions storage
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        //Redirect user to home page if they are not signed in
+        if(user === null){
+            alert("Please sign in first or register to create a potluck.");
+            navigate("/");
 
-        //const user = JSON.parse(sessionStorage.getItem("user"));
-        //setUsername(user.username);
-        setUsername("jlangston");
+            //Commented default username for debugging
+            //setUsername("jlangston");
+        }
+        else{
+            setUsername(user.username);
+        }
     }, []);
 
     const [description, setDescription] = useState("");
@@ -32,10 +38,9 @@ export default function CreatePotlukk(){
     }
 
     async function createPotluck(){
-        const potluck = {description:description,dateTime:Date.parse(date),creator:username,private:isPrivate,url:""};
+        const potluck = {description:description,dateTime:Date.parse(date),creator:username,private:isPrivate};
         
-        //Update link to proper host website
-        const response = await fetch("http://localhost:8080/potlucks",{
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/",{
             body:JSON.stringify(potluck),
             method:"POST",
             headers:{
@@ -51,13 +56,12 @@ export default function CreatePotlukk(){
         }
         else{
             alert("Failed to create potluck.");
+            console.log(response);
         }
         
         
     }
 
-    //Add a link to the Submit button that goes to the add items page
-    //After creating the new potluck
     return(<>
     
     <h1>Create a potluck for {username}</h1>
