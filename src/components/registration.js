@@ -100,7 +100,7 @@ export default function RegisterUser(){
                             className="mb-3"
                         >
 
-                            <Form.Control onChange={updatePassword} name = "password" htmlFor="password" type="password" placeholder="Password" />Wine
+                            <Form.Control onChange={updatePassword} name = "password" htmlFor="password" type="password" placeholder="Password" />
                             </FloatingLabel>
                         </td>
                     </tr>
