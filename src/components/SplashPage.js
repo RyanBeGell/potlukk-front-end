@@ -22,7 +22,7 @@ export default function SplashPage(){
 //Create list to display ONLY public Potlukks
     const listItems = potlukks.filter(p => !p.private).map(p => 
         <tr>
-            <td width="20%"><Link to={"potlukkviewer/"+p.potluckID}><Button variant = "primary" size = "md" padding-right="100px">Select</Button></Link></td>
+            <td width="10%"><Link to={"potlukkviewer/"+p.potluckID}><Button variant = "primary" size = "md" padding-right="100px">Select</Button></Link></td>
             <td width="36%">{p.description}</td>
             <td width="18%">{Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', 
                 day: '2-digit'}).format(p.datetime)}</td>
@@ -52,11 +52,7 @@ export default function SplashPage(){
 
         <div id="splashPageLinks">
             <table>
-                <tr>
-                    <td width="400px"><a href="/signin">
-                        <Button variant="link">Sign In</Button>
-                    </a></td>
-                    
+                <tr>                   
                     <td width="400px"><a href="/createpotlukk">
                         <Button variant="link">Create a New Potlukk</Button>
                     </a>  </td>  
@@ -68,5 +64,8 @@ export default function SplashPage(){
                 
             </table>
         </div>
+        <a href="/signin">
+                        <Button id="signIn" variant="link">Sign In</Button>
+                    </a>
     </>)
 }
