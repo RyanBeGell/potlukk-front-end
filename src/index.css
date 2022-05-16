@@ -17,7 +17,7 @@
     margin-top:20px;
     margin-left:20px;
     background-color: #64b5f6 !important;
-    border-color:#64b5f6 !important;;
+    border-color:#64b5f6 !important;
 }
 
 #linkButton{
@@ -29,5 +29,30 @@
     display: table;
     margin-right: auto;
     margin-left: auto;
-    padding-top: 0px;
+}
+
+#potluckViewer {
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 100px;
+    width:700px;
+    height:auto;
+    border: 1px solid;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    border-radius: 25px;
+    border-color:#64b5f6;
+  }
+
+#editPotluckButton{
+    margin-bottom: 10px;
+}
+
+.potluckItemInput{
+    padding-right: 10px;
+}
+
+td {
+    padding: 5px;
 }
