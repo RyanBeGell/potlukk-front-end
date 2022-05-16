@@ -115,6 +115,7 @@ export default function PotlukkViewer(){
         }
      }
 
+//Display View
     return(<>
     <h1>{potluck.description} : {date}</h1>
     <h3>Sign Up To Contribute!</h3>
