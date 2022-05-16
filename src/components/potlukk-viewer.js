@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button'
 
 export default function PotlukkViewer(){
     const {id} = useParams();
+    const navigate = useNavigate();
 
     const [potluck, setPotluck] = useState([]);
 
@@ -126,6 +127,34 @@ export default function PotlukkViewer(){
         }
      }
 
+    //Validate user is the owner when "Edit Potlukk" button is clicked
+    async function validateUser(){
+
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${id}`);
+        const body = await response.json();
+        const creator = body.creator;
+
+        //Check if user is signed in
+        //Then check to see if their username matches the potluck creator
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        if(user === null){
+
+            alert("Please sign in first to edit your potluck.");          
+
+            //Commented default username for debugging
+            //setUsername("jlanfgston");
+        }
+        else{
+            const username = user.username;
+
+            if(username !== creator){
+                alert("Sorry, you are not authorized to edit this Potluckk");
+            }else{
+                navigate(`/additems/${id}`);
+            }
+        }
+    }
+
     return(<>
 
     <Button href="/" id = "home" variant="primary" size = "lg">Home</Button>
@@ -147,7 +176,7 @@ export default function PotlukkViewer(){
                 <tr>
                     <th>Item</th>
                     <th>Volunteer</th>
-                    <th><Button id = "editPotluckButton" href="/additems" variant="warning" size = "sm">Edit Potluck</Button></th>
+                    <th><Button  onClick={() => { validateUser();}} id = "editPotluckButton" variant="warning" size = "sm">Edit Potluck</Button></th>
                     </tr>
             </thead>
             <tbody>
