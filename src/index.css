@@ -37,7 +37,7 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 50px;
-    width:1200px;
+    width:auto;
     height:auto;
     border: 1px solid;
     padding-top: 30px;
@@ -54,9 +54,15 @@
     margin-right: auto;
     margin-left: auto;
     margin-top: 10px;
-    width:1200px;
+    width:auto;
     height:auto;
     border: none;
     padding-left: 40px;
     padding-right: 40px;
   }
+
+#signIn{
+    position:absolute;
+    top:10px;
+    right: 10px;
+}
