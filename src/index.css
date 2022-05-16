@@ -31,3 +31,32 @@
     margin-left: auto;
     padding-top: 0px;
 }
+
+#splashPageContent{
+    display: table;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+    width:1200px;
+    height:auto;
+    border: 1px solid;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 25px;
+    border-color:#64b5f6;
+  }
+
+  #splashPageLinks{
+    display: table;
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    width:1200px;
+    height:auto;
+    border: none;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
