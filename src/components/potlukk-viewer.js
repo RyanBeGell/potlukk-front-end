@@ -6,41 +6,55 @@ export default function PotlukkViewer(){
 
     const [potluck, setPotluck] = useState([]);
 
+//Get Potluck Name, Date & Time for display at the top of the page
     async function getPotluckbyId(id){
-        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/"+id);
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id);
         const body = await response.json();
         setPotluck(body)
     }
 
-    useEffect(()=>{getPotluckbyId(id)}, [])
+    useEffect(()=>{getPotluckbyId(id)})
 
+//Convert Unix Epoch date (BigInt in PostgreSQL) to Readable date & Time
     const date = new Intl.DateTimeFormat('en-US', 
         { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', 
         minute: '2-digit'}).format(potluck.dateTime);
 
+//Stateful variable to track items
     const [items,setItems] = useState([]);
 
+//GET all items from the DB
     async function getAllItems(){
-        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/"+id+"/items/");
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id+"/items/");
         const body = await response.json();
         console.log(body);
         setItems(body)
     }
 
+//Upon first load of page, call get all items to populate the lists
+    useEffect(()=>{getAllItems()}, [])
+
+//Update the "stateful" items variable (So we don't need the bd connection in getAllItems every time we update)
     function updateItems(item){
         const clonedArray = [...items];
         clonedArray.push(item);
         setItems(clonedArray)
     }
 
-    useEffect(()=>{getAllItems()}, [])
-
+//Divide list of items into "Fulfilled" and "Wanted"/"Needed"
+//Map Wanted/Needed for display on first list and add button to sign up
+//Why doesn't the item disappear when you click the button and change the status???
     const missing = items.filter(i => i.status!="Fulfilled").map(i =>
-        <tr><td>{i.description}</td><td><input onChange={updateSupplier} placeholder="Your Name"/></td><td><button onClick={() => { bringItem(i); getAllItems();}}>Sign me Up!</button></td></tr>);
+        <tr><td>{i.description}</td><td><input onChange={updateSupplier} 
+            placeholder="Your Name"/></td><td><button 
+            onClick={() => { bringItem(i)}}>Sign me Up!</button></td></tr>);
 
+// Fulfilled items list the description and supplier for viewing in list
     const fulfilled = items.filter(i => i.status=="Fulfilled").map(i =>
         <tr><td>{i.description}</td><td>{i.supplier}</td></tr>);    
 
+
+// Description and Supplier Input Boxes and associated states to track entered values    
      const [description, setDescription] = useState("");
      const [supplier,setSupplier] = useState("");
 
@@ -57,7 +71,7 @@ export default function PotlukkViewer(){
 //Create and sign up to bring a new item
      async function createItem(){
         const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
-        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
             body:JSON.stringify(item),
             method:"Post",
             headers:{
@@ -68,15 +82,16 @@ export default function PotlukkViewer(){
         if(response.status != 201){
             alert("Failed to Create New Item");
         } else {
+            //Update the "stateful" items variable with the new item that was just added to the db
             updateItems(item);
         }
      }
 
 
-//Update item to Fulfilled
+//Update item to Fulfilled and add volunteer's (supplier's) name; PATCH to DB
      async function bringItem(item){
         item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
-        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
             body:JSON.stringify(item),
             method:"PATCH", //patch has to be in caps for some reason...but not Post...
             headers:{
@@ -96,21 +111,21 @@ export default function PotlukkViewer(){
     <h3>Sign Up To Contribute!</h3>
     <table>
         <thead>
-            <tr><th>Item</th><th>Supplier</th></tr>
+            <tr><th>Item</th><th>Volunteer</th></tr>
         </thead>
         <tbody>
             {missing}
             <tr>
                 <td><input onChange={updateDescription} name="otherItem" placeholder="Other Item"/></td>
                 <td><input onChange={updateSupplier} name="supplier" placeholder="Your Name"/></td>
-                <td><button onClick={() => { createItem(); getAllItems();}}>Sign me Up!</button></td>
+                <td><button onClick={() => { createItem();}}>Sign me Up!</button></td>
             </tr>
         </tbody>
     </table>
 <br/><h3>Current Menu</h3>
 <table>
         <thead>
-            <tr><th>Item</th><th>Supplier</th></tr>
+            <tr><th>Item</th><th>Volunteer</th></tr>
         </thead>
         <tbody>
             {fulfilled}
