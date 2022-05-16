@@ -8,21 +8,24 @@ export default function SplashPage(){
     const [potlukk,setPotlukk] = useState("");
 
     async function getAllPotlukks(){
-        const response = await fetch("Potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
         const body = await response.json();
         setPotlukks(body);
-        console.log(body);
     }
 
     useEffect(()=>{
         getAllPotlukks()
     },[]);
 
+
     const listItems = potlukks.filter(p => !p.isPrivate).map(p => 
         <tr>
             <td><Link to={"potlukkviewer/"+p.potluckID}><button>Select</button></Link></td>
             <td>{p.description}</td>
-            <td>{Date(p.datetime)}</td>
+            <td>{Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', 
+                day: '2-digit'}).format(p.datetime)}</td>
+            <td>{Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit'})
+                .format(p.datetime)}</td>
             <td>{p.creator}</td>
         </tr>);
 
@@ -31,7 +34,7 @@ export default function SplashPage(){
         <h3>Choose a Potlukk:</h3>
         <table>
             <thead>
-                <tr><td></td><th>Potlukk</th><th>Date/Time</th><th>Host</th></tr>
+                <tr><td></td><th>Potlukk</th><th>Date</th><th>Time</th><th>Host</th></tr>
             </thead>
             <tbody>
                 {listItems}
