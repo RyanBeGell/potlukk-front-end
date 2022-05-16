@@ -45,7 +45,7 @@ export default function PotlukkViewer(){
 //Map Wanted/Needed for display on first list and add button to sign up
 //Why doesn't the item disappear when you click the button and change the status???
     const missing = items.filter(i => i.status!=="Fulfilled").map(i =>
-        <tr><td>{i.description}</td><td><input onChange={updateSupplier} 
+        <tr><td>{i.description}</td><td>{i.status}</td><td><input onChange={updateSupplier} 
             placeholder="Your Name"/></td><td><button 
             onClick={() => { bringItem(i);}}>Sign me Up!</button></td></tr>);
 
@@ -115,17 +115,18 @@ export default function PotlukkViewer(){
         }
      }
 
+//Display View
     return(<>
     <h1>{potluck.description} : {date}</h1>
     <h3>Sign Up To Contribute!</h3>
     <table>
         <thead>
-            <tr><th>Item</th><th>Volunteer</th></tr>
+            <tr><th>Item</th><th>Status</th><th>Volunteer</th></tr>
         </thead>
         <tbody>
             {missing}
             <tr>
-                <td><input onChange={updateDescription} name="otherItem" placeholder="Other Item"/></td>
+                <td colSpan="2"><input onChange={updateDescription} name="otherItem" placeholder="Other Item"/></td>
                 <td><input onChange={updateSupplier} name="supplier" placeholder="Your Name"/></td>
                 <td><button onClick={() => { createItem();}}>Sign me Up!</button></td>
             </tr>
