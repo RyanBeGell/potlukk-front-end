@@ -18,7 +18,7 @@ root.render(
         <Route path='/potlukkviewer' element={<PotlukkViewer/>}/>
         <Route path='/potlukkviewer/:id' element={<PotlukkViewer/>}/>
         <Route path='/createpotlukk' element={<CreatePotlukk/>}/>
-        <Route path='/additems' element={<AddItems/>}/>
+        <Route path='/additems/:potluckId' element={<AddItems/>}/>
         <Route path='/register' element={<RegisterUser/>}/>
         <Route path='/signin' element={<SignIn/>}/>
       </Routes>
