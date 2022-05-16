@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { Form, Button, FloatingLabel } from "react-bootstrap";
 
 export default function CreatePotlukk(){
 
@@ -63,15 +64,19 @@ export default function CreatePotlukk(){
     }
 
     return(<>
-    
-    <h1>Create a potluck for {username}</h1>
+        <Button href="/" id = "home" variant="primary" size = "lg">Home</Button>
+        <img id ="logo" src="../../images/PotlukkNameLogo.png" alt="Potlukk logo"></img>
+
+        <div id ="createPotlukkContent" align ="center">
+            <h3>Create a potluck</h3>
+            <p><b>Logged in as {username}</b></p>
     
         <table>
             <tbody>
-                <tr><td><label htmlFor="potluckname">Name/Description</label></td>
+                <tr><td><label htmlFor="potluckname">Name/Description:&nbsp;&nbsp;&nbsp;</label></td>
                 <td><input onChange={updateDescription} name ="potluckkname"/><br/></td></tr>
             
-                <tr><td><label htmlFor="date">Date/Time</label></td>
+                <tr><td><label htmlFor="date">Date/Time:</label></td>
                 <td><input type="datetime-local" onChange={updateDate} value={date}/></td></tr>
 
                 <tr><td><label htmlFor="isprivate">Private:</label></td>
@@ -82,10 +87,8 @@ export default function CreatePotlukk(){
         <br/>
         <br/>
 
-        <button onClick={createPotluck}>Submit</button>
-        
-        <br/>
-        <button onClick={()=>navigate("/")}> Return to Home </button>
+        <Button variant = "primary" size = "md" onClick={createPotluck}>Submit</Button>
+        </div>
     </>)
 
 }

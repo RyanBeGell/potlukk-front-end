@@ -40,7 +40,7 @@ export default function SplashPage(){
         <div id ="splashPageContent" align ="center">
         <h3>Choose a Potlukk:</h3>
 
-        <table width="1100px">
+        <table width="100%">
             <thead>
                 <tr><td></td><th>Potlukk</th><th>Date</th><th>Time</th><th>Host</th></tr>
             </thead>

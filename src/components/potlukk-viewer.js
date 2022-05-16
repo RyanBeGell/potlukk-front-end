@@ -116,6 +116,35 @@ export default function PotlukkViewer(){
         }
      }
 
+
+     //Validate user is the owner when "Edit Potlukk" button is clicked
+    async function validateUser(){
+
+        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${id}`);
+        const body = await response.json();
+        const creator = body.creator;
+
+        //Check if user is signed in
+        //Then check to see if their username matches the potluck creator
+        const user = JSON.parse(sessionStorage.getItem("user"));
+        if(user === null){
+            
+            alert("Please sign in first to edit your potluck.");          
+
+            //Commented default username for debugging
+            //setUsername("jlanfgston");
+        }
+        else{
+            const username = user.username;
+
+            if(username !== creator){
+                alert("Sorry, you are not authorized to edit this Potluckk");
+            }else{
+                navigate(`/additems/${id}`);
+            }
+        }
+    }
+
 //Display View
     return(<>
     <h1>{potluck.description} : {date}</h1>
@@ -144,7 +173,7 @@ export default function PotlukkViewer(){
     </table>
 <br/>
 
-    <button onClick={()=>navigate(`/additems/${id}`)}>Edit Potluck</button>
+    <button onClick={() => { validateUser();}}>Edit Potluck</button>
     
     <a href="/">
         <button>Return to Home</button>
