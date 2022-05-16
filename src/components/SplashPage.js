@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { Form, Button, FloatingLabel } from "react-bootstrap";
 
 export default function SplashPage(){
 
@@ -22,20 +22,25 @@ export default function SplashPage(){
 //Create list to display ONLY public Potlukks
     const listItems = potlukks.filter(p => !p.private).map(p => 
         <tr>
-            <td><Link to={"potlukkviewer/"+p.potluckID}><button>Select</button></Link></td>
-            <td>{p.description}</td>
-            <td>{Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', 
+            <td width="10%"><Link to={"potlukkviewer/"+p.potluckID}><Button variant = "primary" size = "md" padding-right="100px">Select</Button></Link></td>
+            <td width="36%">{p.description}</td>
+            <td width="18%">{Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', 
                 day: '2-digit'}).format(p.datetime)}</td>
-            <td>{Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit'})
+            <td width="18%">{Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit'})
                 .format(p.datetime)}</td>
-            <td>{p.creator}</td>
+            <td width="18%">{p.creator}</td>
         </tr>);
 
 //Display
     return(<>
-        <h1>Welcome to Potlukk!</h1>
+        <br/>
+        <br/>
+        <br/>
+        <img id ="logo" src="../../images/PotlukkNameLogo.png" alt="Potlukk logo"></img>
+        <div id ="splashPageContent" align ="center">
         <h3>Choose a Potlukk:</h3>
-        <table>
+
+        <table width="100%">
             <thead>
                 <tr><td></td><th>Potlukk</th><th>Date</th><th>Time</th><th>Host</th></tr>
             </thead>
@@ -43,19 +48,24 @@ export default function SplashPage(){
                 {listItems}
             </tbody>
         </table>
+        </div>
 
-        <br/>
-        <br/>
-        <a href="/register">
-            <button>Register a New User</button>
-        </a>
-        
-        <a href="/createpotlukk">
-            <button>Create a New Potlukk</button>
-        </a>    
+        <div id="splashPageLinks">
+            <table>
+                <tr>                   
+                    <td width="400px"><a href="/createpotlukk">
+                        <Button variant="link">Create a New Potlukk</Button>
+                    </a>  </td>  
 
+                    <td width="400px"><a href="/register">
+                        <Button variant="link">Register a New User</Button>
+                    </a></td>
+                </tr>
+                
+            </table>
+        </div>
         <a href="/signin">
-            <button>Sign In</button>
-        </a>
+                        <Button id="signIn" variant="link">Sign In</Button>
+                    </a>
     </>)
 }

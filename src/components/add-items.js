@@ -4,8 +4,6 @@ import { useNavigate, useParams } from "react-router-dom"
 export default function AddItems(){
 
     const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [creator, setCreator] = useState("");
     const {potluckId} = useParams();
 
     const [items, setItems] = useState([]);
@@ -18,15 +16,11 @@ export default function AddItems(){
 
     }
 
-    async function getCreator(){
+    async function validateUser(){
 
         const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`);
         const body = await response.json();
-        setCreator(body.creator);
-    }
-
-    useEffect(()=>{
-        getCreator();
+        const creator = body.creator;
 
         //Check if user is signed in
         //Then check to see if their username matches the potluck creator
@@ -41,16 +35,23 @@ export default function AddItems(){
             //setUsername("jlanfgston");
         }
         else{
-            setUsername(user.username);
-            
+            const username = user.username;
+
             if(username !== creator){
                 alert("You are not the owner of this potluck");
                 navigate("/");
             }
         }
+    }
+
+    useEffect(()=>{
+        validateUser();
 
         getItemsByPotluck();
     },[]);
+
+    //Generate direct URL to potluck page
+    const URL = (window.location.href).replace("additems", "potlukkviewer");
 
     const itemsMissingRows = items.filter(i => i.status !== "Fulfilled")
     .map(i => <tr key ={i.itemId}>
@@ -177,10 +178,13 @@ export default function AddItems(){
             {itemsFulfilledRows}
         </tbody>
     </table>
+    <br/>
+    <p>Direct link to this Potluck: <a href={URL}>{URL}</a></p>
     
     <br/>
     <button onClick={()=>navigate("/")}>Return to Home</button>
     <button onClick={deletePotluck}>Delete Potluck</button>
+    
     
     </>)
 
