@@ -42,7 +42,7 @@ export default function AddItems(){
         }
         else{
             setUsername(user.username);
-            
+
             if(username !== creator){
                 alert("You are not the owner of this potluck");
                 navigate("/");
@@ -51,6 +51,8 @@ export default function AddItems(){
 
         getItemsByPotluck();
     },[]);
+
+    const URL = (window.location.href).replace("additems", "potlukkviewer");
 
     const itemsMissingRows = items.filter(i => i.status !== "Fulfilled")
     .map(i => <tr key ={i.itemId}>
@@ -177,10 +179,13 @@ export default function AddItems(){
             {itemsFulfilledRows}
         </tbody>
     </table>
+    <br/>
+    <p>Direct link to this Potluck: <a href={URL}>{URL}</a></p>
     
     <br/>
     <button onClick={()=>navigate("/")}>Return to Home</button>
     <button onClick={deletePotluck}>Delete Potluck</button>
+    
     
     </>)
 
