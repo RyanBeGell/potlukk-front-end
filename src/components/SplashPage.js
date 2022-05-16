@@ -7,18 +7,20 @@ export default function SplashPage(){
     const [potlukks,setPotlukks] = useState([]);
     const [potlukk,setPotlukk] = useState("");
 
+//GET all Potlukks from the DB
     async function getAllPotlukks(){
         const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
         const body = await response.json();
         setPotlukks(body);
+        console.log(potlukks);
     }
 
     useEffect(()=>{
         getAllPotlukks()
     },[]);
 
-
-    const listItems = potlukks.filter(p => !p.isPrivate).map(p => 
+//Create list to display ONLY public Potlukks
+    const listItems = potlukks.filter(p => !p.private).map(p => 
         <tr>
             <td><Link to={"potlukkviewer/"+p.potluckID}><button>Select</button></Link></td>
             <td>{p.description}</td>
@@ -29,6 +31,7 @@ export default function SplashPage(){
             <td>{p.creator}</td>
         </tr>);
 
+//Display
     return(<>
         <h1>Welcome to Potlukk!</h1>
         <h3>Choose a Potlukk:</h3>

@@ -44,13 +44,13 @@ export default function PotlukkViewer(){
 //Divide list of items into "Fulfilled" and "Wanted"/"Needed"
 //Map Wanted/Needed for display on first list and add button to sign up
 //Why doesn't the item disappear when you click the button and change the status???
-    const missing = items.filter(i => i.status!="Fulfilled").map(i =>
+    const missing = items.filter(i => i.status!=="Fulfilled").map(i =>
         <tr><td>{i.description}</td><td><input onChange={updateSupplier} 
             placeholder="Your Name"/></td><td><button 
-            onClick={() => { bringItem(i)}}>Sign me Up!</button></td></tr>);
+            onClick={() => { bringItem(i);}}>Sign me Up!</button></td></tr>);
 
-// Fulfilled items list the description and supplier for viewing in list
-    const fulfilled = items.filter(i => i.status=="Fulfilled").map(i =>
+
+    const fulfilled = items.filter(i => i.status==="Fulfilled").map(i =>
         <tr><td>{i.description}</td><td>{i.supplier}</td></tr>);    
 
 
@@ -102,7 +102,16 @@ export default function PotlukkViewer(){
         if(response.status != 200){
             alert("Failed to Create New Item");
         } else {
-            updateItems(item);
+            // console.log(item);
+            // updateItems(item);
+            items.forEach(i => {
+                if(item.itemId === i.itemId){
+                    i.status = "Fulfilled"
+                    i.supplier = supplier
+                }
+            })
+            setItems([...items]);
+            setSupplier("");
         }
      }
 
