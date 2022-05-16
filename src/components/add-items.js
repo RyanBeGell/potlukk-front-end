@@ -12,7 +12,7 @@ export default function AddItems(){
 
     async function getItemsByPotluck(){
 
-        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}/items`);
+        const response = await fetch(`https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}/items`);
         const body = await response.json();
         setItems(body);
 
@@ -20,7 +20,7 @@ export default function AddItems(){
 
     async function validateUser(){
 
-        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`);
+        const response = await fetch(`https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`);
         const body = await response.json();
         const creator = body.creator;
         setPotluckname(body.description);
@@ -85,7 +85,7 @@ export default function AddItems(){
     async function createItem(){
         const item = {description:description, status:status, supplier:"", potluckId:potluckId};
 
-        const response = await fetch('http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items',{
+        const response = await fetch('https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items',{
             body:JSON.stringify(item),
             method:"POST",
             headers:{
@@ -103,7 +103,7 @@ export default function AddItems(){
 
     async function deleteItem(itemId){
 
-        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/${itemId}`, {
+        const response = await fetch(`https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/${itemId}`, {
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"
@@ -119,7 +119,7 @@ export default function AddItems(){
 
     async function deletePotluck(){
         
-        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`, {
+        const response = await fetch(`https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${potluckId}`, {
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"

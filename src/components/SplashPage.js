@@ -9,7 +9,7 @@ export default function SplashPage(){
 
 //GET all Potlukks from the DB
     async function getAllPotlukks(){
-        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
+        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks");
         const body = await response.json();
         setPotlukks(body);
         console.log(potlukks);

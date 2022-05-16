@@ -10,7 +10,7 @@ export default function PotlukkViewer(){
 
 //Get Potluck Name, Date & Time for display at the top of the page
     async function getPotluckbyId(id){
-        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id);
+        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id);
         const body = await response.json();
         setPotluck(body)
     }
@@ -27,7 +27,7 @@ export default function PotlukkViewer(){
 
 //GET all items from the DB
     async function getAllItems(){
-        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id+"/items/");
+        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/"+id+"/items/");
         const body = await response.json();
         console.log(body);
         setItems(body)
@@ -78,7 +78,7 @@ export default function PotlukkViewer(){
             alert('Please input your name as the supplier.');
         }else{
             const item = {itemId:0, description:description, status:"Fulfilled", supplier:supplier, potluckId:id}
-            const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
+            const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items",{
                 body:JSON.stringify(item),
                 method:"Post",
                 headers:{
@@ -102,7 +102,7 @@ export default function PotlukkViewer(){
             alert('Please input your name as the supplier.');
          }else{
             item = {itemId:item.itemId, description:item.description, status:"Fulfilled", supplier:supplier, potluckId:item.potluckId}
-            const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
+            const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/items/"+item.itemId+"/fulfilled",{
                 body:JSON.stringify(item),
                 method:"PATCH", //patch has to be in caps for some reason...but not Post...
                 headers:{
@@ -130,7 +130,7 @@ export default function PotlukkViewer(){
     //Validate user is the owner when "Edit Potlukk" button is clicked
     async function validateUser(){
 
-        const response = await fetch(`http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${id}`);
+        const response = await fetch(`https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/${id}`);
         const body = await response.json();
         const creator = body.creator;
 
