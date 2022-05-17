@@ -109,7 +109,7 @@ export default function RegisterUser(){
             <br/>
             <Button variant = "primary" size = "lg" onClick={createUser}>Submit</Button>
             <br/>
-            <Button href="/signin" id= "linkButton" variant="link">Sign in instead</Button>
+            <Button id= "linkButton" variant="link" onClick={() => navigate("/signin")}>Sign in instead</Button>
         </div> 
         <br/>
     </>)

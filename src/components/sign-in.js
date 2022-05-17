@@ -77,7 +77,7 @@ export default function SignIn(){
             <br/>
             <Button variant = "primary" size = "lg" onClick={sendLoginInfo}>Sign in</Button>{' '}
             <br/>
-            <Button href="/register" id= "linkButton" variant="link">Create Account</Button>
+            <Button id= "linkButton" variant="link" onClick={() => navigate("/register")}>Create Account</Button>
         </div>
     </>)
 }

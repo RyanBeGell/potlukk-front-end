@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Form, Button, FloatingLabel } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function SplashPage(){
 
     const [potlukks,setPotlukks] = useState([]);
     const [potlukk,setPotlukk] = useState("");
+    const navigate = useNavigate();
 
 //GET all Potlukks from the DB
     async function getAllPotlukks(){
@@ -25,9 +27,9 @@ export default function SplashPage(){
             <td width="10%"><Link to={"potlukkviewer/"+p.potluckID}><Button variant = "primary" size = "md" padding-right="100px">Select</Button></Link></td>
             <td width="36%">{p.description}</td>
             <td width="18%">{Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', 
-                day: '2-digit'}).format(p.datetime)}</td>
+                day: '2-digit'}).format(p.dateTime)}</td>
             <td width="18%">{Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit'})
-                .format(p.datetime)}</td>
+                .format(p.dateTime)}</td>
             <td width="18%">{p.creator}</td>
         </tr>);
 
@@ -53,19 +55,17 @@ export default function SplashPage(){
         <div id="splashPageLinks">
             <table>
                 <tr>                   
-                    <td width="400px"><a href="/createpotlukk">
-                        <Button variant="link">Create a New Potlukk</Button>
-                    </a>  </td>  
+                    <td width="400px">
+                        <Button variant="link" onClick={() => navigate("/createpotlukk")}>Create a New Potlukk</Button>
+                    </td>  
 
-                    <td width="400px"><a href="/register">
-                        <Button variant="link">Register a New User</Button>
-                    </a></td>
+                    <td width="400px">
+                        <Button variant="link" onClick={() => navigate("/register")}>Register a New User</Button></td>
                 </tr>
                 
             </table>
         </div>
-        <a href="/signin">
-                        <Button id="signIn" variant="link">Sign In</Button>
-                    </a>
+            <Button id="signIn" variant="link" onClick={() => navigate("/signin")}>Sign In</Button>
+
     </>)
 }
