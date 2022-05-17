@@ -41,7 +41,7 @@ export default function CreatePotlukk(){
     async function createPotluck(){
         const potluck = {description:description,dateTime:Date.parse(date),creator:username,private:isPrivate};
         
-        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/",{
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/potlucks/",{
             body:JSON.stringify(potluck),
             method:"POST",
             headers:{

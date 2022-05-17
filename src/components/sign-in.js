@@ -19,7 +19,7 @@ export default function SignIn(){
 
     async function sendLoginInfo(){
         const loginInfo = {username,password}
-        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/login", {
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/login", {
             method:"POST", 
             body:JSON.stringify(loginInfo),
             headers:{

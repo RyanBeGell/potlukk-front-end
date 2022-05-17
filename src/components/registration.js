@@ -28,7 +28,7 @@ export default function RegisterUser(){
 
     async function createUser(){
         const user = {username:username,firstName:firstName,lastName:lastName,password:password}
-        const response = await fetch("https://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/users",{
+        const response = await fetch("http://potlukk-env.eba-yammgqbq.us-west-1.elasticbeanstalk.com/users",{
             body:JSON.stringify(user),
             method:"POST",
             headers:{
